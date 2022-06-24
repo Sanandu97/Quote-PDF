@@ -1,0 +1,247 @@
+<apex:page standardController="Quote" extensions="QuotePDF" standardStylesheets="false" applyBodyTag="false" renderAs="PDF" showHeader="false"  applyHtmlTag="false"  cache="true" readOnly="true" docType="html-5.0">
+        <head>
+                <style type="text/css" media="print">
+                       @page {
+                        margin-top: 2.5cm;
+                                 @top-center {
+                                       content: element(header);
+                               }
+                               @bottom-left {
+                                     content: element(footer);
+                               }
+                            }
+                                     div.header {
+                                      padding: 10px;
+                                      position: running(header);
+                           }
+                       div.footer {
+                                display: block;
+                             padding: 5px;
+                               position: running(footer);
+                      }
+                                     .pagenumber:before {
+                                        content: counter(page);
+                       }
+                                   .pagecount:before {
+                             content: counter(pages);
+                        }
+                        #rich1 .sfdc_richtext img {
+                width: 70px;
+                height: 70px;
+                }
+                    </style>
+              </head>
+           <div class="header">
+              <div><apex:image value="{!$Resource.Header}"  width="10%"/></div>
+           </div>
+           <div class="footer">
+                <div style="text-align:Center;font-family: Arial Unicode MS; font-size: 10pt;">Page <span class="pagenumber"/> of <span class="pagecount"/></div>
+          </div>
+           <table style="width:100%;margin:0px;background-color:white;border-collapse:collapse;">
+                    <tr>
+                        <td style="width:49%;padding:5px;border:2px solid #f1f0ef;font-size:16px;"><b>Quote</b></td>
+                        <!--<td style="width:25%;padding:5px;border:2px solid #f1f0ef;font-size:16px;"><b>No: {!Quote.Quote_Number__c}  </b></td>
+                        <td style="width:25%;padding:5px;border:2px solid #f1f0ef;font-size:16px;"><b>Date: <apex:outputText style="padding-left:10px;" value="{0,date,dd/MM/yyyy}"> <apex:param value="{!Quote.Quote_Date__c}" /> </apex:outputText></b></td>-->
+                        
+                    </tr>
+           </table>
+           
+           <table style="margin:0px;width:50%;background-color:white;border: 2px solid #e0dbdb;float:left;">
+                    <tr style="margin:0px;">
+                        <td colspan="4" style="font-size:16px;"><b>Billing Address</b></td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%;padding:5px;">Name</td>
+                        <td colspan="3" style="border-bottom:2px solid #f1f0ef;">{!Quote.BillingName}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%;padding:5px;">Address</td>
+                        <td colspan="3" style="border-bottom:2px solid #f1f0ef;">{!Quote.BillingStreet}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%;padding:5px;"></td>
+                        <td colspan="3" style="border-bottom:2px solid #f1f0ef;">{!Quote.BillingState}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%;padding:5px;"></td>
+                        <td colspan="3" style="border-bottom:2px solid #f1f0ef;"><div>{!Quote.BillingCountry}</div></td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%;padding:5px;">City</td>
+                        <td style="width:35%;border-bottom:2px solid #f1f0ef;">{!Quote.BillingCity}</td>
+                        <td style="width:25%;padding:5px;">Pin Code</td>
+                        <td style="width:20%;border-bottom:2px solid #f1f0ef;">{!Quote.BillingPostalCode}</td>
+                    </tr>
+                </table>
+                
+                <table style="margin:0px;width:50%;background-color:white;border: 2px solid #e0dbdb;border-left:0px;float:right;">
+                    <tr style="margin:0px;">
+                        <td colspan="4" style="font-size:16px;"><b>Shipping Address</b></td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%;padding:5px;">Name</td>
+                        <td colspan="3" style="border-bottom:2px solid #f1f0ef;">{!Quote.ShippingName}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%;padding:5px;">Address</td>
+                        <td colspan="3" style="border-bottom:2px solid #f1f0ef;">{!Quote.ShippingStreet}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%;padding:5px;"></td>
+                        <td colspan="3" style="border-bottom:2px solid #f1f0ef;">{!Quote.ShippingState}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%;padding:5px;"></td>
+                        <td colspan="3" style="border-bottom:2px solid #f1f0ef;"><div>{!Quote.ShippingCountry}</div></td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%;padding:5px;">City</td>
+                        <td style="width:35%;border-bottom:2px solid #f1f0ef;">{!Quote.ShippingCity}</td>
+                        <td style="width:25%;padding:5px;">Pin Code</td>
+                        <td style="width:20%;border-bottom:2px solid #f1f0ef;">{!Quote.ShippingPostalCode}</td>
+                    </tr>
+                </table>
+                
+               <!-- <table style="width:100%;margin:0px;background-color:white;border-collapse:collapse;float:left;">
+                    <tr>  
+                        <td style="width:100% ;padding:0px;border:2px solid #f1f0ef;font-size:16px;"><apex:outputText escape="false" value="{!Quote.Welcome_Message__c}"/></td>
+                    </tr>
+                </table>-->
+                
+                <table style="width:100%;margin:0px;background-color:white;border-collapse:collapse;float:left;">
+                    
+                    <tr>
+                        <th style="width:5%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Sl No.</th>
+                        <th  style="width:20%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Name of Machine</th>
+                        <th  style="width:25%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Description</th>
+                        <th  style="width:10%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Quantity</th>
+                        <th  style="width:10%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Unit</th>
+                        <th  style="width:10%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Base Price</th>
+                        <th  style="width:10%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Discount %</th>
+                        <th  style="width:10%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Total</th>
+                    </tr>
+                    
+                    <apex:variable value="{!1}" var="SlNo"/>
+                    <apex:variable value="{!1}" var="num"/>
+                    
+                    <apex:repeat value="{!Quote.QuoteLineItems}" var="line">
+                        <apex:outputText rendered="{!num == 3  || num == 8 || num == 13 || num == 18 || num == 23 || num == 28 || num == 33 || num == 38}">
+                            <tr style="height:22px !important;">
+                                <td  style="padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                                <td  style="padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                                <td  style="padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                                <td  style="padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                                <td  style="padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                                <td  style="padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                                <td  style="padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                                <td  style="padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                            </tr>
+                            <div style="page-break-after: always;">&nbsp; </div><br/><br/><br/>
+                            <tr>
+                                <th style="width:5%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Sl No.</th>
+                                <th  style="width:20%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Name of Machine</th>
+                                <th  style="width:25%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Description</th>
+                                <th  style="width:10%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Quantity</th>
+                                <th  style="width:10%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Unit</th>
+                                <th  style="width:10%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Base Price</th>
+                                <th  style="width:10%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Discount %</th>
+                                <th  style="width:10%;padding:5px;background-color:yellow;border:2px solid #f1f0ef;text-align:center;">Total</th>
+                            </tr>
+                        </apex:outputText>
+                        
+                        <tr style="height:22px !important;">
+                            <td  style="padding:5px;border-right:2px solid #f1f0ef;">{!SlNo}</td><apex:variable value="{!SlNo+1}" var="SlNo"/>
+                            <td  id="rich1" style="padding:5px;border-right:2px solid #f1f0ef;"><apex:outputField value="{!line.Product2.Name}"></apex:outputField></td>
+                            <td  style="padding:5px;border-right:2px solid #f1f0ef;">{!line.Product2.Description}</td>
+                            <td  style="padding:5px;border-right:2px solid #f1f0ef;">{!line.Quantity}</td>
+                            <!--<td  style="padding:5px;border-right:2px solid #f1f0ef;">{!line.Unit_of_Measurement__c}</td>-->
+                            <td  style="padding:5px;border-right:2px solid #f1f0ef;text-align:right;">
+                                <apex:outputText value="{0, number, ###,###,###,##0.00}">                           
+                           <apex:param value="{!line.UnitPrice}"/>
+                       </apex:outputText>
+                            </td>
+                            <td  style="padding:5px;border-right:2px solid #f1f0ef;text-align:right;"> {!line.Discount}</td>
+                            <td  style="padding:5px;border-right:2px solid #f1f0ef;text-align:right;">
+                                <apex:outputText value="{0, number, ###,###,###,##0.00}">                           
+                           <apex:param value="{!line.TotalPrice}"/>
+                       </apex:outputText>
+                            </td>
+                        </tr>
+                        
+                        <apex:variable value="{!num+1}" var="num" />
+                        
+                    </apex:repeat>
+                    
+                    
+                    <tr style="height:22px !important;">
+                        <td  style="width:5%;padding:5px;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:20%;padding:5px;border-Top:2px solid #f1f0ef;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;">SubTotal</td>
+                        <td  style="width:25%;padding:5px;border-Top:2px solid #f1f0ef;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:10%;padding:5px;border-Top:2px solid #f1f0ef;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:10%;padding:5px;border-Top:2px solid #f1f0ef;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:10%;padding:5px;border-Top:2px solid #f1f0ef;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:10%;padding:5px;border-Top:2px solid #f1f0ef;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <!--<td  style="width:10%;padding:5px;border-Top:2px solid #f1f0ef;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"><b>{!Quote.TotalPrice}</b></td>-->
+                         <th  style="width:10%;padding:5px;border-Top:2px solid #f1f0ef;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;text-align:right;">
+                           <apex:outputText value="{0, number, ###,###,###,##0.00}">                           
+                           <apex:param value="{!Quote.TotalPrice}"/>
+                       </apex:outputText>
+                   </th>  
+                    </tr>
+                    <tr style="height:22px !important;">
+                        <td  style="width:5%;padding:5px;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:20%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;">Tax Amount</td>
+                        <td  style="width:25%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:10%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:10%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:10%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:10%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <!--<td  style="width:10%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"><b>{!Quote.Tax}</b></td>-->
+                        <th  style="width:10%;padding:5px;border-Top:2px solid #f1f0ef;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;text-align:right;">                         
+                        <apex:outputText value="{0, number, ###,###,###,##0.00}">                           
+                           <apex:param value="{!Quote.Tax}"/>
+                       </apex:outputText>
+                        </th>
+                    </tr>
+                    <tr style="height:22px !important;">
+                        <td  style="width:5%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:20%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;">Grand Total</td>
+                        <td  style="width:25%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:10%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:10%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:10%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <td  style="width:10%;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"></td>
+                        <!--<td  style="width:100;padding:5px;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;"><b>{!Quote.GrandTotal}</b></td>-->
+                        <th  style="width:10;padding:5px;border-Top:2px solid #f1f0ef;border-bottom:2px solid #f1f0ef;border-right:2px solid #f1f0ef;text-align:right;">
+                           <apex:outputText value="{0, number, ###,###,###,##0.00}">
+                           <apex:param value="{!Quote.GrandTotal}"/>
+                       </apex:outputText>
+                   </th>
+                        
+                    </tr>
+                    <tr >
+                        <td colspan="9" style="padding:5px;">Amount Chargeable (in words) : {!Finalamount} Rupees only.</td>
+                    </tr>
+                    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+                   
+                    
+                   <tr>
+                        <td colspan="4" style="font-size:16px;"><b>Terms and Condition</b></td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="9" style="width:150%;padding:5px;"><apex:outputText escape="false" value="{!Quote.Terms__c}"/></td>
+                    </tr>
+                    <tr>
+                        <td style="width:65%;border:0px solid #f1f0ef;"></td>
+                        <td style="width:40%;padding:5px;text-align:center;font-weight:bold;padding:10px;"><br/><br/>
+                            For COMPANY ,<br/><br/><br/>
+                            Authorized Signatory
+                        </td>
+                    </tr>
+                    
+                </table>
+    			
+                
+     
+</apex:page>

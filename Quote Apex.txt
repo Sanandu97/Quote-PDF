@@ -1,0 +1,85 @@
+public with sharing class QuotePDF {
+    public Quote Quo {get;set;}
+    Private Id ParentId{get;set;}
+    public List<Integer> lstEmptyCell{set;get;}
+    
+    public String[] units = new String[]{'Zero ','One ','Two ','Three ','Four ','Five ','Six ','Seven ','Eight ','Nine ','Ten ','Eleven ','Twelve ','Thirteen ','Fourteen ','Fifteen ','Sixteen ','Seventeen ','Eighteen ','Nineteen '};
+    public String[] tens = new String[]{'','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'};
+    private Long Finalamount = 0;
+    
+    public QuotePDF(ApexPages.StandardController Controller){
+    
+        lstEmptyCell = New List<Integer>();
+    
+        Quo = [Select id,Name,ExpirationDate,TotalPrice,GrandTotal,Tax,Subtotal,QuoteNumber,Phone,ShippingAddress,ShippingName,Discount,BillingAddress,Email,Quote.Account.Name,Quote.Contact.Name,Quote.Contact.Phone,Quote.Contact.Email,Quote.Contact.MobilePhone,Opportunity.Owner.Name,(Select id,TotalPrice,Subtotal,UnitPrice,Quantity,ListPrice,Description,Discount,QuoteLineItem.Product2.Name From QuoteLineItems) From Quote Where Id=: Controller.getId()];
+        for(Quote Qu :[Select id,Name,ExpirationDate,TotalPrice,GrandTotal,Tax,Subtotal,QuoteNumber,Phone,ShippingAddress,ShippingName,Discount,BillingAddress,Email,Quote.Account.Name,Quote.Contact.Name,Quote.Contact.Phone,Quote.Contact.Email,Quote.Contact.MobilePhone,Opportunity.Owner.Name,(Select id,TotalPrice,Subtotal,UnitPrice,Quantity,ListPrice,Description,Discount,QuoteLineItem.Product2.Name From QuoteLineItems) From Quote Where Id=: Controller.getId()]){
+            Finalamount += Long.valueOf(String.valueOf((Qu.GrandTotal).setscale(0)));
+        }
+        
+        for(Integer temp=0;temp<2-Quo.QuoteLineItems.size();temp++)
+            lstEmptyCell.add(temp);
+            
+    }
+      public String getFinalamount(){
+        return Convert(Finalamount);
+    }
+    
+     public String getSubtotal() {
+        String sAmt = '', sTemp ='', sLast='';
+        Decimal dAmt = Quo.TotalPrice;
+        sAmt = FormulateAmountInString(dAmt);
+        system.debug('sAmt======>'+sAmt);
+        return sAmt;
+    }
+    
+    public String getTax() {
+        String sAmt = '', sTemp ='', sLast='';
+        Decimal dAmt = Quo.Tax;
+        sAmt = FormulateAmountInString(dAmt);
+        system.debug('sAmt======>'+sAmt);
+        return sAmt;
+    }
+    
+    public String getGrandTotal() {
+        String sAmt = '', sTemp ='', sLast='';
+        Decimal dAmt = Quo.GrandTotal;
+        sAmt = FormulateAmountInString(dAmt);
+        system.debug('sAmt======>'+sAmt);
+        return sAmt;
+    }
+    
+     public string FormulateAmountInString(Decimal dAmt) {
+        
+        String sAmt = '', sTemp ='', sLast='';
+        If(dAmt > 1000) {
+            sAmt = String.valueOf(dAmt);
+            sLast = sAmt.right(6);
+            sTemp = sAmt.left(sAmt.length() - 6);
+            if(sTemp.length() > 2) {
+                while( sTemp.length()/2 > 0) {
+                    sLast = sTemp.right(2)+ ',' + sLast;
+                    sTemp = sTemp.Left(sTemp.length() -2);
+                }
+            }
+            if(sTemp != '') {
+                sAmt = sTemp + ',' + sLast;
+            }
+        } else {
+            sAmt = String.valueOf(dAmt);
+        }
+        return sAmt;
+        
+    }
+    public  String Convert(long i) {
+        if(i < 20)  return units[integer.valueOf(i)];
+        if(i < 100) return tens[integer.valueOf(i)/10] + ((math.mod(i , 10) > 0)? '' + convert(math.mod(i , 10)):'');
+        if(i < 1000) return units[integer.valueOf(i)/100] + ' Hundred ' + ((math.mod(i , 100) > 0)?' ' + convert(math.mod(i , 100)):'');
+        if(i < 10000) return units[integer.valueOf(i)/1000] + ' Thousand ' + ((math.mod(i , 1000) > 0)?' ' + convert(math.mod(i , 1000)):'');
+        if(i < 100000) return convert(i / 1000) + ' Thousand ' + ((math.mod(i , 1000) > 0)? '' + convert(math.mod(i ,1000)):'') ;
+        if(i < 1000000) return units[integer.valueOf(i)/100000] + ' Lakh ' + ((math.mod(i , 100000) > 0)? '' + convert(math.mod(i ,100000)):'') ;
+        if(i < 10000000) return convert(i / 100000) + ' Lakh ' + ((math.mod(i , 100000) > 0)? '' + convert(math.mod(i ,100000)):'') ;
+        if(i < 100000000) return units[integer.valueOf(i)/10000000] + ' Crore ' + ((math.mod(i , 10000000) > 0)? '' + convert(math.mod(i , 10000000)):'') ;
+        if(i < 1000000000) return convert(i / 10000000) + 'Crore ' + ((math.mod(i , 10000000) > 0)? '' + convert(math.mod(i , 10000000)):'') ;
+        return convert(i / 1000000000) + ' Crore ' + ((math.mod(i , 1000000000) > 0) ? '' + convert(math.mod(i , 1000000000)):'') ;
+    }
+}
